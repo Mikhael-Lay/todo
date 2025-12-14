@@ -80,8 +80,8 @@ function toggle(val) {
 /* ================= RENDER ================= */
 function render() {
   /* ----- Date Tabs ----- */
-  const dates = [...new Set(tasks.map(t => t.date))];
-  dateTabs.innerHTML = '';
+    const dates = [...new Set(tasks.map(t => t.date))]
+    .sort((a, b) => b.localeCompare(a));
 
   const allBtn = document.createElement('button');
   allBtn.className =
