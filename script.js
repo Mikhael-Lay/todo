@@ -1,32 +1,31 @@
 let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-let activeDate = null;
+let activeDate = 'ALL';
 let showDone = false;
 
 const timeEl = document.getElementById('time');
 const taskList = document.getElementById('taskList');
 const dateTabs = document.getElementById('dateTabs');
 const sheet = document.getElementById('sheet');
+const showTodoBtn = document.getElementById('showTodo');
+const showDoneBtn = document.getElementById('showDone');
 
-// Time
+/* TIME */
 function updateTime() {
   const now = new Date();
   const days = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
-
-  const dateStr = `${days[now.getDay()]}, ${now.toLocaleDateString('en-US')}`;
-  const timeStr = now.toLocaleTimeString('en-US');
-
-  timeEl.innerHTML = `
-    <div>${dateStr}</div>
-    <div>${timeStr}</div>
-  `;
+  timeEl.innerHTML = `<div>${days[now.getDay()]}, ${now.toLocaleDateString('en-US')}</div><div>${now.toLocaleTimeString('en-US')}</div>`;
 }
 setInterval(updateTime, 1000); updateTime();
 
-// Open / Close Sheet
+function todayStr() {
+  return new Date().toISOString().split('T')[0];
+}
+
+/* OPEN / CLOSE SHEET */
 document.getElementById('openAdd').onclick = () => sheet.classList.add('show');
 sheet.onclick = e => { if (e.target === sheet) sheet.classList.remove('show'); };
 
-// Add Task
+/* ADD TASK */
 document.getElementById('addTaskBtn').onclick = () => {
   if (!taskText.value || !taskDate.value) return;
   tasks.push({
@@ -41,21 +40,31 @@ document.getElementById('addTaskBtn').onclick = () => {
   save();
 };
 
-// Toggle
-document.getElementById('showTodo').onclick = () => toggle(false);
-document.getElementById('showDone').onclick = () => toggle(true);
+/* TOGGLE */
+showTodoBtn.onclick = () => toggle(false);
+showDoneBtn.onclick = () => toggle(true);
 
 function toggle(val) {
   showDone = val;
-  showTodo.classList.toggle('active', !val);
+  showTodoBtn.classList.toggle('active', !val);
   showDoneBtn.classList.toggle('active', val);
   render();
 }
 
-// Render
+/* RENDER */
 function render() {
   const dates = [...new Set(tasks.map(t => t.date))];
   dateTabs.innerHTML = '';
+
+  const allBtn = document.createElement('button');
+    allBtn.className = 'date-btn all' + (activeDate === 'ALL' ? ' active' : '');
+    allBtn.textContent = 'All';
+    allBtn.onclick = () => {
+    activeDate = 'ALL';
+    render();
+    };
+
+dateTabs.appendChild(allBtn);
 
   dates.forEach(d => {
     const btn = document.createElement('button');
@@ -68,39 +77,93 @@ function render() {
   if (!activeDate && dates.length) activeDate = dates[0];
 
   taskList.innerHTML = '';
-  tasks.filter(t => t.date === activeDate && t.done === showDone)
-    .forEach(t => {
+    tasks.filter(t =>
+    (activeDate === 'ALL' || t.date === activeDate) &&
+    t.done === showDone)
+      .forEach(t => {
       const li = document.createElement('li');
-      const left = document.createElement('div'); left.className = 'task-left';
+      li.className = 'task-item';
 
-      const cb = document.createElement('input'); cb.type = 'checkbox'; cb.checked = t.done;
+      const left = document.createElement('div');
+
+      const main = document.createElement('div');
+      main.className = 'task-main';
+
+      const cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.checked = t.done;
       cb.onchange = () => { t.done = cb.checked; save(); };
 
-      const span = document.createElement('span'); span.textContent = t.text;
-      if (t.done) span.classList.add('done');
+      const text = document.createElement('div');
+      text.className = 'task-text';
+      text.textContent = t.text;
+      if (t.done) text.classList.add('done');
+
+      main.append(cb, text);
+
+      const meta = document.createElement('div');
+      meta.className = 'task-meta';
 
       const badge = document.createElement('span');
       badge.className = `badge ${t.priority}`;
       badge.textContent = t.priority;
+      meta.appendChild(badge);
 
-      left.append(cb, span, badge);
+      const today = new Date().toISOString().split('T')[0];
+      if (!t.done && t.date < today) {
+        const overdue = document.createElement('span');
+        overdue.className = 'overdue';
+        overdue.textContent = 'overdue';
+        meta.appendChild(overdue);
+      }
 
-      const del = document.createElement('button'); del.textContent = '✕'; del.className = 'delete';
-      del.onclick = () => { tasks = tasks.filter(x => x.id !== t.id); save(); };
+      left.append(main, meta);
+
+      const del = document.createElement('button');
+      del.className = 'delete';
+      del.textContent = '✕';
+      del.onclick = () => {
+        tasks = tasks.filter(x => x.id !== t.id);
+        save();
+      };
 
       li.append(left, del);
       taskList.appendChild(li);
     });
 
-  ['low','medium','high','urgent'].forEach(p => {
-    document.getElementById(p+'Count').textContent =
-      tasks.filter(t => t.priority === p && !t.done).length;
-  });
-}
+    const today = todayStr();
 
-// Delete All
+    // Priority (todo only)
+    ['low','medium','high','urgent'].forEach(p => {
+    document.getElementById(p + 'Count').textContent =
+        tasks.filter(t => t.priority === p && !t.done).length;
+    });
+
+    // Overdue
+    document.getElementById('overdueCount').textContent =
+    tasks.filter(t => !t.done && t.date < today).length;
+
+    // To Do
+    document.getElementById('todoCount').textContent =
+    tasks.filter(t => !t.done).length;
+
+    // Done
+    document.getElementById('doneCount').textContent =
+    tasks.filter(t => t.done).length;
+
+    // All
+    document.getElementById('allCount').textContent = tasks.length;
+
+    }
+
+/* DELETE ALL */
 document.getElementById('deleteAllBtn').onclick = () => {
+  if (activeDate === 'ALL') {
+  tasks = [];
+} else {
   tasks = tasks.filter(t => t.date !== activeDate);
+}
+activeDate = 'ALL';
   activeDate = null;
   save();
 };

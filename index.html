@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -10,9 +9,10 @@
 <body>
   <div class="app">
 
+    <!-- HEADER -->
     <header class="header">
       <div class="profile">
-        <img src="./img/profile.jpg" />
+        <img src="./img/profile.jpg" alt="profile" />
         <div>
           <h3>Mikhael</h3>
           <p>Full Stack Developer</p>
@@ -21,29 +21,42 @@
       <div class="time" id="time"></div>
     </header>
 
+    <!-- PRIORITY CARDS -->
     <section class="cards">
-      <div class="card low">Low<br><span id="lowCount">0</span></div>
-      <div class="card medium">Medium<br><span id="mediumCount">0</span></div>
-      <div class="card high">High<br><span id="highCount">0</span></div>
-      <div class="card urgent">Urgent<br><span id="urgentCount">0</span></div>
+        <div class="card low">Low<br><span id="lowCount">0</span></div>
+        <div class="card medium">Medium<br><span id="mediumCount">0</span></div>
+        <div class="card high">High<br><span id="highCount">0</span></div>
+        <div class="card urgent">Urgent<br><span id="urgentCount">0</span></div>
+
+        <div class="card overdue">Overdue<br><span id="overdueCount">0</span></div>
+        <div class="card todo">To Do<br><span id="todoCount">0</span></div>
+        <div class="card done">Done<br><span id="doneCount">0</span></div>
+        <div class="card all">All Task<br><span id="allCount">0</span></div>
     </section>
 
-    <button class="add-btn" id="openAdd">+ Add Task</button>
-
-    <!-- Date Tabs -->
+    <!-- DATE FILTER -->
     <section class="dates" id="dateTabs"></section>
 
+    <!-- TODO / DONE TOGGLE -->
     <div class="toggle">
       <button id="showTodo" class="active">To Do</button>
       <button id="showDone">Done</button>
     </div>
 
+    <!-- TASK LIST -->
     <ul id="taskList"></ul>
 
-    <button class="delete-all" id="deleteAllBtn">Delete All (Tanggal)</button>
+    <!-- DELETE ALL -->
+    <div class="delete-row">
+      <div></div>
+      <button class="delete-all" id="deleteAllBtn">Delete All</button>
+    </div>
+
+    <!-- ADD TASK -->
+    <button class="add-btn" id="openAdd">+ Add Task</button>
   </div>
 
-  <!-- Bottom Sheet -->
+  <!-- BOTTOM SHEET ADD TASK -->
   <div class="sheet" id="sheet">
     <div class="sheet-content">
       <div class="sheet-bar"></div>
@@ -62,4 +75,3 @@
   <script src="script.js"></script>
 </body>
 </html>
-
