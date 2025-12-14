@@ -1,7 +1,7 @@
 /* ================= STATE ================= */
 let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 let activeDate = 'ALL';
-let showDone = false;
+let showMode = 'todo'; 
 
 /* ================= ELEMENTS ================= */
 const timeEl = document.getElementById('time');
@@ -10,6 +10,7 @@ const dateTabs = document.getElementById('dateTabs');
 const sheet = document.getElementById('sheet');
 
 const showTodoBtn = document.getElementById('showTodo');
+const showOverdueBtn = document.getElementById('showOverdue');
 const showDoneBtn = document.getElementById('showDone');
 
 /* ================= TIME ================= */
@@ -65,21 +66,25 @@ document.getElementById('addTaskBtn').onclick = () => {
 };
 
 /* ================= TOGGLE TODO / DONE ================= */
-showTodoBtn.onclick = () => toggle(false);
-showDoneBtn.onclick = () => toggle(true);
+function setMode(mode) {
+  showMode = mode;
 
-function toggle(val) {
-  showDone = val;
-
-  showTodoBtn.classList.toggle('active', !val);
-  showDoneBtn.classList.toggle('active', val);
+  showTodoBtn.classList.toggle('active', mode === 'todo');
+  showOverdueBtn.classList.toggle('active', mode === 'overdue');
+  showDoneBtn.classList.toggle('active', mode === 'done');
 
   render();
 }
 
+showTodoBtn.onclick = () => setMode('todo');
+showOverdueBtn.onclick = () => setMode('overdue');
+showDoneBtn.onclick = () => setMode('done');
+
 /* ================= RENDER ================= */
 function render() {
   /* ----- Date Tabs ----- */
+    dateTabs.innerHTML = '';
+
     const dates = [...new Set(tasks.map(t => t.date))]
     .sort((a, b) => b.localeCompare(a));
 
@@ -110,12 +115,27 @@ function render() {
   /* ----- Task List ----- */
   taskList.innerHTML = '';
 
-  tasks
-    .filter(
-      t =>
-        (activeDate === 'ALL' || t.date === activeDate) &&
-        t.done === showDone
-    )
+tasks
+  .filter(t => {
+    const today = todayStr();
+
+    if (activeDate !== 'ALL' && t.date !== activeDate) return false;
+
+    if (showMode === 'todo') {
+      return !t.done && t.date >= today;
+    }
+
+    if (showMode === 'overdue') {
+      return !t.done && t.date < today;
+    }
+
+    if (showMode === 'done') {
+      return t.done;
+    }
+
+    return true;
+  })
+  
     .forEach(t => {
       const li = document.createElement('li');
       li.className = 'task-item';
