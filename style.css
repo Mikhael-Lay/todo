@@ -1,87 +1,319 @@
-*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
-body{background:#f2f4f7}
-.app{width:390px;min-height:844px;margin:auto;padding:16px}
+/* ================= RESET & BASE ================= */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
 
-/* HEADER */
-.header{display:flex;justify-content:space-between;align-items:center}
-.profile{display:flex;gap:8px;align-items:center}
-.profile img{width:42px;height:42px;border-radius:50%}
-.profile h3{font-size:14px;font-weight:600}
-.profile p{font-size:11px;color:#6b7280}
-.time{font-size:11px;text-align:right}
+body {
+  background: #f2f4f7;
+}
 
-/* CARDS */
-.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:16px 0}
-.card{padding:10px 6px;border-radius:14px;color:#fff;font-size:11px;font-weight:600;text-align:center;box-shadow:0 6px 12px rgba(0,0,0,.12)}
-.low{background:linear-gradient(135deg,#4ade80,#22c55e)}
-.medium{background:linear-gradient(135deg,#fbbf24,#f97316)}
-.high{background:linear-gradient(135deg,#f87171,#ef4444)}
-.urgent{background:linear-gradient(135deg,#c084fc,#9333ea)}
+.app {
+  width: 390px;
+  min-height: 844px;
+  margin: auto;
+  padding: 16px;
+}
 
-/* DATE TABS */
-.dates{display:flex;gap:8px;overflow-x:auto;margin-bottom:12px}
-.date-btn{padding:6px 14px;border-radius:20px;border:none;font-size:12px;background:#e5e7eb}
-.date-btn.active{background:#2563eb;color:#fff}
+/* ================= HEADER ================= */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-/* TOGGLE */
-.toggle{display:flex;background:#e5e7eb;border-radius:12px;overflow:hidden;margin-bottom:10px}
-.toggle button{flex:1;padding:8px;border:none;background:none;font-weight:600;font-size:12px}
-.toggle .active{background:#2563eb;color:#fff}
+.profile {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
 
-/* LIST */
-ul{list-style:none}
-.task-item{background:#fff;border-radius:14px;padding:12px;margin-bottom:10px;display:flex;justify-content:space-between;box-shadow:0 6px 12px rgba(0,0,0,.08)}
-.task-main{display:flex;gap:8px;align-items:flex-start}
-.task-text{font-weight:600;font-size:14px}
-.task-meta{margin-left:26px;margin-top:4px;display:flex;gap:6px}
-.done{text-decoration:line-through;color:#506486}
+.profile img {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+}
 
-.badge{font-size:10px;padding:2px 8px;border-radius:999px;color:#fff;text-transform:capitalize}
-.badge.low{background:#22c55e}
-.badge.medium{background:#f97316}
-.badge.high{background:#ef4444}
-.badge.urgent{background:#9333ea}
+.profile h3 {
+  font-size: 14px;
+  font-weight: 600;
+}
 
-.overdue{font-size:10px;padding:2px 6px;background:#fee2e2;color:#b91c1c;border-radius:999px}
-.delete{border:none;background:none;color:#ef4444;font-size:16px}
+.profile p {
+  font-size: 11px;
+  color: #6b7280;
+}
 
-/* DELETE ROW */
-.delete-row{display:flex;justify-content:space-between;margin:12px 0}
-.delete-all{border:none;background:#ef4444;color:#fff;padding:8px 14px;border-radius:14px;font-weight:600}
+.time {
+  font-size: 11px;
+  text-align: right;
+}
 
-/* ADD BUTTON */
-.add-btn{width:100%;padding:12px;border:none;border-radius:14px;background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff;font-weight:600}
+/* ================= CARDS ================= */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin: 16px 0;
+}
 
-/* BOTTOM SHEET */
-.sheet{position:fixed;inset:0;background:rgba(0,0,0,.4);display:none}
-.sheet.show{display:block}
-.sheet-content{position:absolute;bottom:0;width:100%;background:#fff;border-radius:20px 20px 0 0;padding:16px}
-.sheet-bar{width:40px;height:4px;background:#d1d5db;border-radius:2px;margin:0 auto 12px}
-.sheet-content textarea,.sheet-content input,.sheet-content select{width:100%;padding:10px;border-radius:12px;border:1px solid #d1d5db;margin-bottom:10px}
-.sheet-content button{width:100%;padding:12px;border:none;border-radius:14px;background:#2563eb;color:#fff;font-weight:600}
+.card {
+  min-height: 60px;
+  padding: 10px 6px;
+  border-radius: 14px;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+}
 
-/* card gradiend */
+/* Priority Colors */
+.low {
+  background: linear-gradient(135deg, #4ade80, #22c55e);
+}
+
+.medium {
+  background: linear-gradient(135deg, #fbbf24, #f97316);
+}
+
+.high {
+  background: linear-gradient(135deg, #f87171, #ef4444);
+}
+
+.urgent {
+  background: linear-gradient(135deg, #c084fc, #9333ea);
+}
+
+/* ================= DATE TABS ================= */
+.dates {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  margin-bottom: 12px;
+}
+
+.date-btn {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: none;
+  font-size: 12px;
+  background: #e5e7eb;
+}
+
+.date-btn.active {
+  background: #2563eb;
+  color: #fff;
+}
+
+/* ================= TOGGLE ================= */
+.toggle {
+  display: flex;
+  background: #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.toggle button {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  background: none;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.toggle .active {
+  background: #2563eb;
+  color: #fff;
+}
+
+/* ================= LIST ================= */
+ul {
+  list-style: none;
+}
+
+.task-item {
+  background: #fff;
+  border-radius: 14px;
+  padding: 12px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+}
+
+.task-main {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.task-text {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.task-meta {
+  margin-left: 26px;
+  margin-top: 4px;
+  display: flex;
+  gap: 6px;
+}
+
+.done {
+  text-decoration: line-through;
+  color: #506486;
+}
+
+/* ================= BADGES ================= */
+.badge {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  color: #fff;
+  text-transform: capitalize;
+}
+
+.badge.low {
+  background: #22c55e;
+}
+
+.badge.medium {
+  background: #f97316;
+}
+
+.badge.high {
+  background: #ef4444;
+}
+
+.badge.urgent {
+  background: #9333ea;
+}
+
+.overdue {
+  font-size: 10px;
+  padding: 2px 6px;
+  background: #fee2e2;
+  color: #b91c1c;
+  border-radius: 999px;
+}
+
+.delete {
+  border: none;
+  background: none;
+  color: #ef4444;
+  font-size: 16px;
+}
+
+/* ================= DELETE ROW ================= */
+.delete-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 12px 0;
+}
+
+.delete-all {
+  border: none;
+  background: #ef4444;
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 14px;
+  font-weight: 600;
+}
+
+/* ================= ADD BUTTON ================= */
+.add-btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #fff;
+  font-weight: 600;
+}
+
+/* ================= BOTTOM SHEET ================= */
+.sheet {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: none;
+}
+
+.sheet.show {
+  display: block;
+}
+
+.sheet-content {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: #fff;
+  border-radius: 20px 20px 0 0;
+  padding: 16px;
+}
+
+.sheet-bar {
+  width: 40px;
+  height: 4px;
+  background: #d1d5db;
+  border-radius: 2px;
+  margin: 0 auto 12px;
+}
+
+.sheet-content textarea,
+.sheet-content input,
+.sheet-content select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+  margin-bottom: 10px;
+}
+
+.sheet-content button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 14px;
+  background: #2563eb;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* ================= CARD GRADIENTS ================= */
 .card.overdue {
-  background: linear-gradient(135deg,#f87171,#ef4444);
+  background: linear-gradient(135deg, #f87171, #ef4444);
 }
 
 .card.done {
-  background: linear-gradient(135deg,#34d399,#059669);
+  background: linear-gradient(135deg, #34d399, #059669);
 }
 
 .card.todo {
-  background: linear-gradient(135deg,#3b82f6,#1d4ed8);
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
 }
 
 .card.all {
-  background: linear-gradient(135deg,#a1a1aa,#52525b);
+  background: linear-gradient(135deg, #a1a1aa, #52525b);
 }
 
-/* card overdue and done fix */
-
-.card.overdue, .card.done, .card.todo, .card.all {
+/* ================= CARD FIX (OVERRIDE LIST STYLES) ================= */
+.card.overdue,
+.card.done,
+.card.todo,
+.card.all {
+  border-radius: 14px;
   color: #ffffff;
-  font-size: inherit;
   font-weight: inherit;
   line-height: inherit;
   text-decoration: none;
